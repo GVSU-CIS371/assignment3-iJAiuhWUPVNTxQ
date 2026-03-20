@@ -1,10 +1,22 @@
 <template>
-  <div class="froth">
-    <div v-for=" in 5" class="foam"></div>
+  <div v-if="props.creamer.name !== 'No Cream'" class="froth" :style="creamStyle">
+    <div v-for="i in 5" :key="i" class="foam"></div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { defineProps, computed } from "vue";
+import type { CreamerType } from "../stores/beverage";
+
+const props = defineProps<{
+  creamer: CreamerType;
+}>();
+
+const creamStyle = computed(() => ({
+  backgroundColor: props.creamer.color,
+}));
+</script>
+
 <style lang="scss" scoped>
 .froth {
   overflow: visible;
@@ -12,9 +24,9 @@
   position: relative;
   height: 20%;
   width: 100%;
-  background-color: #c6c6c6;
   animation: pour-tea 2s 2s forwards;
 }
+
 .foam {
   display: block;
   background: #e4e0d2;
@@ -53,5 +65,14 @@
 .foam:nth-child(5) {
   top: 2px;
   right: 10px;
+}
+
+@keyframes pour-tea {
+  from {
+    height: 0;
+  }
+  to {
+    height: 20%;
+  }
 }
 </style>
